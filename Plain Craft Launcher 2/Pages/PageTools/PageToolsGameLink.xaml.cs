@@ -413,7 +413,10 @@ public partial class PageToolsGameLink
                     }
                     catch (Exception ex)
                     {
-                        LogWrapper.Error(ex, $"[Link] Failed to get announcement from server {serverNumber}");
+                        // PCL-In：公告服务器连不上是预期内的（本 fork 常见 LINK_SERVER_ROOT 为空 / 服务器不认这个 fork），
+                        // 而且下面会回退到本地默认值、联机功能照常可用。
+                        // 这里以前用 Error，会把每次尝试都弹成用户可见的报错提示，所以降级为只写日志。
+                        LogWrapper.Info($"[Link] Announcement server {serverNumber} unavailable: {ex.Message}");
                         States.Link.AnnounceCacheConfig.Reset();
                         States.Link.AnnounceCacheVerConfig.Reset();
                         serverNumber++;
@@ -536,7 +539,8 @@ public partial class PageToolsGameLink
                     HintAnnounce.Theme = MyHint.Themes.Red;
                     HintAnnounce.Text = Lang.Text("Tools.GameLink.Error.ConnectFailed");
                 });
-                LogWrapper.Error(ex, "[Link] Failed to get lobby announcement");
+                // PCL-In：页面上已经用红色提示条告诉用户连接失败了，这里只记日志，避免再弹一个重复的报错提示
+                LogWrapper.Info($"[Link] Failed to get lobby announcement: {ex.Message}");
             }
         });
     }

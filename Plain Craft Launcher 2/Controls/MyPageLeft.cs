@@ -195,18 +195,35 @@ public class MyPageLeft : Grid
             CollectListItems(this, items);
             foreach (var item in items)
                 item.ApplyLeftIconOnly(iconOnly);
+            RefreshGroupTextVisibility();
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "刷新左侧栏仅显示图标状态出错");
+        }
+    }
+
+    /// <summary>
+    ///     刷新分组标题（如“添加或导入”“实用工具”）的可见性。
+    ///     只有确实带了图标的列表才隐藏分组标题，否则（文件夹列表、日志列表等）保持原样（PCL-In）。
+    /// </summary>
+    public void RefreshGroupTextVisibility()
+    {
+        try
+        {
             var panel = FindItemPanel(this);
             if (panel is null)
                 return;
-            // 只有确实带了图标的列表才隐藏分类标题，否则（文件夹列表、日志列表等）保持原样
-            var hideGroupText = iconOnly && items.Any(item => item.HasListLogo);
+            var items = new List<MyListItem>();
+            CollectListItems(this, items);
+            var hideGroupText = Config.Preference.Hide.PageLeftIconOnly && items.Any(item => item.HasListLogo);
             foreach (var child in panel.Children)
                 if (child is TextBlock text)
                     text.Visibility = hideGroupText ? Visibility.Collapsed : Visibility.Visible;
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "刷新左侧栏仅显示图标状态出错");
+            ModBase.Log(ex, "刷新左侧栏分组标题出错", ModBase.LogLevel.Debug);
         }
     }
 
