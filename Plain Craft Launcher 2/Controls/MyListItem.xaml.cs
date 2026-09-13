@@ -75,8 +75,9 @@ public partial class MyListItem : IMyRadio
                     ani.Add(ModAnimation.AaDouble(
                         i => ColumnPaddingRight.Width =
                             new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                        Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25) - ColumnPaddingRight.Width.Value,
+                        _ExpandedPaddingRight - ColumnPaddingRight.Width.Value,
                         (int)Math.Round(time * 0.3d), (int)Math.Round(time * 0.7d)));
+                    AnimateOverlayLogo(1d, (int)Math.Round(time * 0.7d), (int)Math.Round(time * 0.3d));
                 }
 
                 ani.AddRange(new[]
@@ -107,7 +108,8 @@ public partial class MyListItem : IMyRadio
                     ani.Add(ModAnimation.AaDouble(
                         i => ColumnPaddingRight.Width =
                             new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                        MinPaddingRight - ColumnPaddingRight.Width.Value, (int)Math.Round(time * 0.4d)));
+                        _CollapsedPaddingRight - ColumnPaddingRight.Width.Value, (int)Math.Round(time * 0.4d)));
+                    AnimateOverlayLogo(0d, (int)Math.Round(time * 0.4d));
                 }
 
                 ani.Add(ModAnimation.AaOpacity(RectBack, -RectBack.Opacity, time));
@@ -135,7 +137,8 @@ public partial class MyListItem : IMyRadio
                 if (buttonStack is not null)
                 {
                     buttonStack.Opacity = 1d;
-                    ColumnPaddingRight.Width = new GridLength(Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25));
+                    ColumnPaddingRight.Width = new GridLength(_ExpandedPaddingRight);
+                    SyncOverlayLogo();
                 }
 
                 // 由于鼠标已经移入，所以直接实例化 RectBack
@@ -149,7 +152,8 @@ public partial class MyListItem : IMyRadio
                 if (buttonStack is not null)
                 {
                     buttonStack.Opacity = 0d;
-                    ColumnPaddingRight.Width = new GridLength(MinPaddingRight);
+                    ColumnPaddingRight.Width = new GridLength(_CollapsedPaddingRight);
+                    SyncOverlayLogo();
                 }
 
                 RenderTransform = new ScaleTransform(1d, 1d);
@@ -172,7 +176,7 @@ public partial class MyListItem : IMyRadio
             SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
         else
             SetResourceReference(ForegroundProperty, "ColorBrush1");
-        ColumnPaddingRight.Width = new GridLength(MinPaddingRight);
+        ColumnPaddingRight.Width = new GridLength(_CollapsedPaddingRight);
         RefreshLeftIconOnly();
     }
 
@@ -199,12 +203,68 @@ public partial class MyListItem : IMyRadio
     // PCL-In：本项目自身是否带图标（没有图标的项目在图标模式下会变成空白，必须保留标题）
     public bool HasListLogo => IsUsingSvgIcon || !string.IsNullOrEmpty(Logo);
 
+    // PCL-In：左侧栏仅显示图标时，操作按钮直接盖在图标上，不再往右侧挤占空间
+    private bool _isLeftIconOnly;
+
+    private double _CollapsedPaddingRight => _isLeftIconOnly ? 0d : MinPaddingRight;
+
+    private double _ExpandedPaddingRight =>
+        _isLeftIconOnly ? 0d : Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25);
+
     /// <summary>
     ///     按“左侧栏仅显示图标”设置刷新标题显示状态（PCL-In）。
     /// </summary>
     public void ApplyLeftIconOnly(bool iconOnly)
     {
+        _isLeftIconOnly = iconOnly && HasListLogo;
         SetTitleVisible(!iconOnly || !HasListLogo);
+        ApplyButtonOverlay();
+    }
+
+    /// <summary>
+    ///     按当前“仅显示图标”状态摆放操作按钮：图标模式居中盖住图标，否则维持靠右（PCL-In）。
+    /// </summary>
+    private void ApplyButtonOverlay()
+    {
+        try
+        {
+            ColumnPaddingRight.Width = new GridLength(_CollapsedPaddingRight);
+            if (buttonStack is null)
+                return;
+            buttonStack.HorizontalAlignment =
+                _isLeftIconOnly ? HorizontalAlignment.Center : HorizontalAlignment.Right;
+            buttonStack.Margin = _isLeftIconOnly ? new Thickness(0d) : new Thickness(0d, 0d, 5d, 0d);
+            if (buttonStack is StackPanel panel)
+                panel.Orientation = _isLeftIconOnly ? Orientation.Vertical : Orientation.Horizontal;
+            SyncOverlayLogo();
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "刷新列表项按钮位置出错", ModBase.LogLevel.Debug);
+        }
+    }
+
+    /// <summary>
+    ///     图标模式下按钮显示时会盖住原图标，所以按按钮的透明度把原图标反向隐藏（PCL-In）。
+    /// </summary>
+    private void SyncOverlayLogo()
+    {
+        if (pathLogo is null)
+            return;
+        ModAnimation.AniStop("ListItem Logo " + Uuid);
+        pathLogo.Opacity = _isLeftIconOnly ? 1d - (buttonStack is null ? 0d : buttonStack.Opacity) : 1d;
+    }
+
+    /// <summary>
+    ///     带动画地同步原图标透明度（PCL-In）。
+    /// </summary>
+    private void AnimateOverlayLogo(double buttonsOpacity, int duration, int delay = 0)
+    {
+        if (!_isLeftIconOnly || pathLogo is null)
+            return;
+        ModAnimation.AniStart(
+            ModAnimation.AaOpacity(pathLogo, 1d - buttonsOpacity - pathLogo.Opacity, duration, delay),
+            "ListItem Logo " + Uuid);
     }
 
     public override string ToString()
@@ -457,6 +517,8 @@ public partial class MyListItem : IMyRadio
                     break;
                 }
             }
+
+            ApplyButtonOverlay();
         }
     }
 
@@ -689,6 +751,7 @@ public partial class MyListItem : IMyRadio
         // 改变行距
         var hasLogo = IsUsingSvgIcon || !string.IsNullOrEmpty(logo);
         ColumnLogo.Width = new GridLength((hasLogo ? 34 : 0) + (Height < 40d ? 0 : 4));
+        SyncOverlayLogo();
     }
 
     public double LogoScale
@@ -779,6 +842,7 @@ public partial class MyListItem : IMyRadio
                 : 2
             : 6);
         ColumnLogo.Width = new GridLength((hasLogo ? 34 : 0) + (Height < 40d ? 0 : 4));
+        SyncOverlayLogo();
 
         if (pathLogo is not null)
         {

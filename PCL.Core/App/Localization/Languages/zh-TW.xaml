@@ -31,6 +31,15 @@
     <sys:String x:Key="Application.InitializationError.Title">PCL-In 初始化錯誤</sys:String>
     <sys:String x:Key="Application.Loader.Error.OperationFailed">任務載入操作失敗。請檢視錯誤詳情。</sys:String>
 
+    <!-- Chat -->
+
+    <sys:String x:Key="Chat.Action.OpenBrowser">在瀏覽器中開啟</sys:String>
+    <sys:String x:Key="Chat.Action.Retry">重試</sys:String>
+    <sys:String x:Key="Chat.Status.InitFailed">聊天室核心初始化失敗，請重試，或改用系統瀏覽器開啟。</sys:String>
+    <sys:String x:Key="Chat.Status.LoadFailed">聊天室載入失敗，請檢查網路後重試。</sys:String>
+    <sys:String x:Key="Chat.Status.Loading">正在載入聊天室…</sys:String>
+    <sys:String x:Key="Chat.Status.WebViewMissing">未偵測到 WebView2 執行階段，無法在啟動器內顯示聊天室。你可以在系統瀏覽器中開啟它。</sys:String>
+
     <!-- Common -->
 
     <sys:String x:Key="Common.Dialog.Title">提示</sys:String>
@@ -1866,6 +1875,7 @@
     <sys:String x:Key="Main.SpecialVersion.IUnderstand">我清楚我在做什麼</sys:String>
     <sys:String x:Key="Main.SpecialVersion.OpenDownloadPageAndExit">開啟最新版下載頁並退出</sys:String>
     <sys:String x:Key="Main.SpecialVersion.Title">特殊版本提示</sys:String>
+    <sys:String x:Key="Main.Tab.Chat">聊天</sys:String>
     <sys:String x:Key="Main.Tab.Download">下載</sys:String>
     <sys:String x:Key="Main.Tab.Launch">啟動</sys:String>
     <sys:String x:Key="Main.Tab.Settings">設定</sys:String>
@@ -3010,7 +3020,6 @@
 
     <sys:String x:Key="Setup.Ui.Basic.AdvancedMaterial">高階材質</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.AdvancedMaterial.ToolTip">啟用此功能後會在部分透明區域（例如卡片）實現模糊效果。&#xA;請注意，該功能會消耗大量 GPU 算力，並導致卡頓！</sys:String>
-    <sys:String x:Key="Setup.Ui.Basic.BlueHint">藍色，藍色，還是藍色！想要逃離藍色困境？請使用官方快照版！</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod">模糊方法</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod.Box">方框模糊</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod.Box.ToolTip">對每個畫素周圍較小範圍的畫素使用線性均值取樣，速度較快，但容易產生色塊。&#xA;該模糊容易造成細節資訊遺失，但效能較好，若裝置效能不佳可選擇使用。</sys:String>
@@ -3021,7 +3030,6 @@
     <sys:String x:Key="Setup.Ui.Basic.BlurRadius.ToolTip">設定模糊效果的取樣半徑，值越大模糊效果越強。</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurSamplingRate">取樣率</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurSamplingRate.ToolTip">設定模糊效果的取樣率，值越大模糊效果越細緻。&#xA;若裝置效能不佳，可嘗試降低該值以獲得更好的效能。</sys:String>
-    <sys:String x:Key="Setup.Ui.Basic.GetSnapshot">取得官方快照版</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.LockWindow">鎖定啟動器大小</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.Opacity">不透明度</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.Opacity2">不透明度</sys:String>
@@ -3048,6 +3056,7 @@
     <!-- Setup.Ui.FeatureHide.Item -->
 
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.About">關於</sys:String>
+    <sys:String x:Key="Setup.Ui.FeatureHide.Item.Chat">聊天</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Download">下載</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Edit">修改</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Export">匯出</sys:String>

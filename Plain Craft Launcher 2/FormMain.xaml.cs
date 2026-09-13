@@ -172,6 +172,7 @@ public partial class FormMain
         BtnTitleSelect1.ShowText = !tabIconOnly;
         BtnTitleSelect2.ShowText = !tabIconOnly;
         BtnTitleSelect3.ShowText = !tabIconOnly;
+        BtnTitleSelect4.ShowText = !tabIconOnly;
         // 加载窗口
 
         ThemeManager.ThemeRefresh();
@@ -1370,6 +1371,11 @@ public partial class FormMain
         Setup = 2,
 
         /// <summary>
+        ///     聊天室。
+        /// </summary>
+        Chat = 4,
+
+        /// <summary>
         ///     实例选择。这是一个副页面。
         /// </summary>
         InstanceSelect = 5,
@@ -1877,6 +1883,12 @@ public partial class FormMain
                         ModMain.frmInstanceLeft ??= new PageInstanceLeft();
                         subType = ModMain.frmInstanceLeft.pageID;
                         PageChangeAnim(ModMain.frmInstanceLeft, (FrameworkElement)ModMain.frmInstanceLeft.PageGet(subType));
+                        break;
+                    }
+                case PageType.Chat: // 聊天室
+                    {
+                        ModMain.frmChatRight ??= new PageChatRight();
+                        PageChangeAnim(new MyPageLeft(), ModMain.frmChatRight);
                         break;
                     }
                 case PageType.CompDetail: // Mod 信息

@@ -164,6 +164,14 @@ public partial class PageLoginProfile
         });
     }
 
+    // PCL-In:整条“新建档案”栏都可点击。
+    // 注意签名必须与 MouseButtonEventHandler 完全一致：XAML 里路由事件的处理器是运行时按名字绑定委托的，
+    // 不像自定义 CLR 事件那样由编译器生成 +=，用 EventArgs 会直接抛 XamlParseException。
+    private void PanButtons_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        BtnNew_Click(sender, e);
+    }
+
     // 编辑 UUID
     private void EditProfileUuid(object sender, EventArgs e)
     {

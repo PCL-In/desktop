@@ -40,8 +40,6 @@ public partial class PageSetupUI
         isLoaded = true;
 
         SliderLoad();
-
-        PanLauncherHide.Visibility = Visibility.Visible;
     }
 
     public void Reload()
@@ -217,7 +215,7 @@ public partial class PageSetupUI
         if (ModAnimation.AniControlEnabled == 0)
         {
             SetByTag(sender.Tag?.ToString(), sender.Checked);
-            // PCL-In:顶部导航仅显示图标,实时应用到四个导航按钮
+            // PCL-In:顶部导航仅显示图标,实时应用到五个导航按钮
             if (sender.Tag?.ToString() == "UiTabIconOnly" && ModMain.frmMain is not null)
             {
                 var iconOnly = sender.Checked == true;
@@ -225,6 +223,7 @@ public partial class PageSetupUI
                 ModMain.frmMain.BtnTitleSelect1.ShowText = !iconOnly;
                 ModMain.frmMain.BtnTitleSelect2.ShowText = !iconOnly;
                 ModMain.frmMain.BtnTitleSelect3.ShowText = !iconOnly;
+                ModMain.frmMain.BtnTitleSelect4.ShowText = !iconOnly;
             }
             // PCL-In:左侧栏仅显示图标,实时应用到已加载的左侧栏
             if (sender.Tag?.ToString() == "UiPageLeftIconOnly")
@@ -683,14 +682,6 @@ public partial class PageSetupUI
         ThemeManager.ThemeRefresh();
     }
 
-    // 赞助 — PCL-In 修改:按钮保留但已禁用(空实现)。
-    // 原版会调转到 https://afdian.com/a/LTCat(原作者赞助页),此 fork 移除该跳转。
-    // 保留方法是 XAML `Click="BtnLauncherDonate_Click"` 引用所需。
-    private void BtnLauncherDonate_Click(object sender, MouseButtonEventArgs e)
-    {
-        // PCL-In:已禁用
-    }
-
     // 滑动条
     private void SliderLoad()
     {
@@ -744,8 +735,9 @@ public partial class PageSetupUI
             // 获取配置组引用以缩短代码
             var conf = Config.Preference.Hide;
 
-            // 顶部栏：下载、设置、工具
-            var isAllTitleHidden = !HiddenForceShow && conf.PageDownload && conf.PageSetup && conf.PageTools;
+            // 顶部栏：下载、设置、工具、聊天
+            var isAllTitleHidden =
+                !HiddenForceShow && conf.PageDownload && conf.PageSetup && conf.PageTools && conf.PageChat;
 
             if (isAllTitleHidden)
             {
@@ -761,6 +753,8 @@ public partial class PageSetupUI
                     !HiddenForceShow && conf.PageSetup ? Visibility.Collapsed : Visibility.Visible;
                 ModMain.frmMain.BtnTitleSelect3.Visibility =
                     !HiddenForceShow && conf.PageTools ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmMain.BtnTitleSelect4.Visibility =
+                    !HiddenForceShow && conf.PageChat ? Visibility.Collapsed : Visibility.Visible;
             }
 
             // 功能隐藏设置卡片

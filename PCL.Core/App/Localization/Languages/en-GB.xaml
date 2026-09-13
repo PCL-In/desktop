@@ -31,6 +31,15 @@
     <sys:String x:Key="Application.InitializationError.Title">PCL-In initialisation error</sys:String>
     <sys:String x:Key="Application.Loader.Error.OperationFailed">A task loading operation failed. See the details below.</sys:String>
 
+    <!-- Chat -->
+
+    <sys:String x:Key="Chat.Action.OpenBrowser">Open in browser</sys:String>
+    <sys:String x:Key="Chat.Action.Retry">Retry</sys:String>
+    <sys:String x:Key="Chat.Status.InitFailed">Failed to initialise the chat engine. Try again, or open it in your system browser.</sys:String>
+    <sys:String x:Key="Chat.Status.LoadFailed">Failed to load the chat room. Check your network and try again.</sys:String>
+    <sys:String x:Key="Chat.Status.Loading">Loading chat room…</sys:String>
+    <sys:String x:Key="Chat.Status.WebViewMissing">WebView2 Runtime was not found, so the chat room cannot be shown inside the launcher. You can open it in your system browser instead.</sys:String>
+
     <!-- Common -->
 
     <sys:String x:Key="Common.Dialog.Title">Hint</sys:String>
@@ -1866,6 +1875,7 @@
     <sys:String x:Key="Main.SpecialVersion.IUnderstand">I know what I am doing</sys:String>
     <sys:String x:Key="Main.SpecialVersion.OpenDownloadPageAndExit">Open latest download page and exit</sys:String>
     <sys:String x:Key="Main.SpecialVersion.Title">Special build notice</sys:String>
+    <sys:String x:Key="Main.Tab.Chat">Chat</sys:String>
     <sys:String x:Key="Main.Tab.Download">Download</sys:String>
     <sys:String x:Key="Main.Tab.Launch">Launch</sys:String>
     <sys:String x:Key="Main.Tab.Settings">Settings</sys:String>
@@ -3010,7 +3020,6 @@
 
     <sys:String x:Key="Setup.Ui.Basic.AdvancedMaterial">Advanced material</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.AdvancedMaterial.ToolTip">When enabled, blur effects will be applied to some transparent areas, such as cards.&#xA;Note that this feature consumes significant GPU resources and may cause lag!</sys:String>
-    <sys:String x:Key="Setup.Ui.Basic.BlueHint">Blue, blue, and more blue! Want to escape from the blue dilemma? Use the official snapshot build!</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod">Blur method</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod.Box">Box blur</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurMethod.Box.ToolTip">Uses linear average sampling over a small area around each pixel, which is faster but may produce colour blocks.&#xA;This blur may lose detail information but has better performance. It can be used on devices with poor performance.</sys:String>
@@ -3021,7 +3030,6 @@
     <sys:String x:Key="Setup.Ui.Basic.BlurRadius.ToolTip">Sets the sampling radius of the blur effect. Larger values produce stronger blur.</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurSamplingRate">Sampling rate</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.BlurSamplingRate.ToolTip">Sets the sampling rate of the blur effect. Higher values produce finer blur.&#xA;If your device has poor performance, try lowering this value for better performance.</sys:String>
-    <sys:String x:Key="Setup.Ui.Basic.GetSnapshot">Get official snapshot build</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.LockWindow">Lock launcher size</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.Opacity">Opacity</sys:String>
     <sys:String x:Key="Setup.Ui.Basic.Opacity2">Opacity</sys:String>
@@ -3048,6 +3056,7 @@
     <!-- Setup.Ui.FeatureHide.Item -->
 
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.About">About</sys:String>
+    <sys:String x:Key="Setup.Ui.FeatureHide.Item.Chat">Chat</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Download">Download</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Edit">Edit</sys:String>
     <sys:String x:Key="Setup.Ui.FeatureHide.Item.Export">Export</sys:String>

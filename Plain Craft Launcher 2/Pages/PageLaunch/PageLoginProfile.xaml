@@ -39,12 +39,13 @@
         </ItemsControl>
     </local:MyScrollViewer>
 
-    <local:MyCard Grid.Row="5" HorizontalAlignment="Center" x:Name="PanButtons" Opacity="10"
-                  CornerRadius="5" Margin="0,0,4,0">
-        <StackPanel Orientation="Horizontal" Margin="10,3,0,3">
-            <local:MyIconButton Height="24" Margin="0,0.5,9,0" x:Name="BtnNew"
+    <!-- PCL-In:原来是一个居中的小方块按钮，和上面的提示条宽度差太多，改为与提示条同宽的一整条（整条都可点） -->
+    <local:MyCard Grid.Row="5" HorizontalAlignment="Stretch" x:Name="PanButtons" Opacity="10"
+                  CornerRadius="5" Margin="0,6,0,0" Cursor="Hand" MouseLeftButtonUp="PanButtons_MouseUp">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,4,10,4">
+            <local:MyIconButton Height="24" Margin="0" x:Name="BtnNew"
                                  Click="BtnNew_Click"
-                                 ToolTip="{DynamicResource Launch.Account.Profile.Create}" ToolTipService.Placement="Center" ToolTipService.VerticalOffset="35"
+                                 ToolTip="{DynamicResource Launch.Account.Profile.Create}" ToolTipService.Placement="Top" ToolTipService.VerticalOffset="4"
                                 ToolTipService.HorizontalOffset="1" ToolTipService.InitialShowDelay="50"
                                 LogoScale="1.08"
                                 SvgIcon="lucide/user-plus" />
