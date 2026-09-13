@@ -8,16 +8,22 @@ PCL-In is a Minecraft launcher fork tailored for non-premium users (especially t
 
 - **No forced trial mode**: Players using third-party skin servers (Authlib / YggdrasilConnect) or offline profiles no longer get forced into the limited demo mode.
 - **No donation prompts**: No donation popups, no links to upstream author's Afdian page.
-- **Independent update channel**: Uses GitHub Releases API to detect new releases of this fork, never overwrites your fork's modifications.
+- **Independent update channel**: Uses GitHub Releases API to detect new releases of this fork, never overwrites your fork's modifications. When the check fails it reports the failure honestly instead of pretending you are on the latest version.
+- **Built-in chat**: A new "Chat" tab in the top navigation embeds [MiniChat](https://minichat.astras.cc), so you do not have to open a browser; hide it any time under Settings → Feature hiding.
+- **More resilient multiplayer**: If no announcement server is configured, or it cannot be reached, multiplayer is no longer marked unavailable — PCL-In falls back to local defaults and you can still play peer-to-peer through EasyTier / Träwelling-style relays (陶瓦).
+- **UI details**: Both the top bar and the left rail can be switched to icon-only; scrollbars stay hidden until you hover them.
 
 ## Download
 
-Visit the [Releases](https://github.com/PCL-In/desktop/releases) page.
+Visit the [Releases](https://github.com/PCL-In/desktop/releases) page: pick `PCL-In-x64.exe` for 64-bit systems, or `PCL-In-arm64.exe` for ARM64.
+
+Every package ships with a `.sha256` checksum and a GPG signature (`.asc`).
 
 ## System Requirements
 
 - Windows 10 1809 (build 17763) or later
 - [.NET 10 Desktop Runtime](https://get.dot.net/10)
+- (Optional) the built-in chat needs the [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/): Windows 11 and Windows 10 with a recent Edge already have it. If it is missing the chat page offers to open in your system browser and nothing else is affected
 
 ## Credits
 
