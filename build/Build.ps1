@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     一键构建 PCL-In 单文件 exe，用于本地测试。
 
