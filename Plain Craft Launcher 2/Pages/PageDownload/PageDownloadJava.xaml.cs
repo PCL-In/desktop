@@ -82,12 +82,15 @@ public partial class PageDownloadJava : MyPageRight
             Text = Lang.Text("Download.Java.Version"),
             Margin = new Thickness(0, 0, 0, 5)
         });
-        _comboVersion = new MyComboBox { MinWidth = 320, HorizontalAlignment = HorizontalAlignment.Left };
+        // 宽度跟随卡片（和设置页里的下拉框一样撑满整行），别缩成一小条
+        _comboVersion = new MyComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
         content.Children.Add(_comboVersion);
         _btnDownload = new MyButton
         {
             Text = Lang.Text("Download.Java.Start"),
+            Height = 35,
             MinWidth = 140,
+            ColorType = MyButton.ColorState.Highlight,
             Margin = new Thickness(0, 12, 0, 0),
             HorizontalAlignment = HorizontalAlignment.Left
         };
