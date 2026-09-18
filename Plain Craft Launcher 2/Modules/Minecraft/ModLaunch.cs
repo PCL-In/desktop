@@ -787,10 +787,23 @@ public static class ModLaunch
         var maxVer = new Version(999, 999, 999, 999);
 
         // MC 大版本检测
+        // PCL-In：原版 26+ 要求 Java 25。Mojang 官方清单：1.21.11 → Java 21，26.1（2026-03-24）→ Java 25。
+        // 必须放在下面 1.20.5+ 那一档之前：否则 26.x 会先命中 1.20.5+ 那档、只要到 Java 21。
+        // 下面 836 行还有一条“读实例 JSON 里 javaVersion”的兜底，但 Fabric / Forge / 整合包生成的
+        // JSON 往往不带这个字段，那条路走不到，所以这里按 MC 版本兜住。
         if ((!ModInstanceList.McMcInstanceSelected.Info.Valid &&
-             ModInstanceList.McMcInstanceSelected.releaseTime >= new DateTime(2024, 4, 2)) ||
+             ModInstanceList.McMcInstanceSelected.releaseTime >= new DateTime(2026, 3, 24)) ||
             (ModInstanceList.McMcInstanceSelected.Info.Valid &&
-             ModInstanceList.McMcInstanceSelected.Info.vanilla >= new Version(20, 0, 5)))
+             ModInstanceList.McMcInstanceSelected.Info.vanilla >= new Version(26, 0, 0)))
+        {
+            if (ModBase.modeDebug)
+                ModBase.Log("[Launch] [Debug] MC 26+（26.1，2026-03-24）要求至少 Java 25");
+            minVer = new Version(25, 0, 0, 0);
+        }
+        else if ((!ModInstanceList.McMcInstanceSelected.Info.Valid &&
+                  ModInstanceList.McMcInstanceSelected.releaseTime >= new DateTime(2024, 4, 2)) ||
+                 (ModInstanceList.McMcInstanceSelected.Info.Valid &&
+                  ModInstanceList.McMcInstanceSelected.Info.vanilla >= new Version(20, 0, 5)))
         {
             // 1.20.5+ (24w14a+)：至少 Java 21
             if (ModBase.modeDebug)

@@ -6,6 +6,11 @@
                           Style="{StaticResource ScrollViewerFullMargin}">
         <StackPanel Margin="0,12,0,0" Name="PanItem">
 
+            <local:MyListItem x:Name="ItemJava" IsScaleAnimationEnabled="False" Type="RadioBox"
+                              Check="PageCheck"
+                              Tag="15" MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.Java}"
+                              SvgIcon="lucide/coffee" />
             <local:MyListItem x:Name="ItemInstall" Checked="True" IsScaleAnimationEnabled="False" Type="RadioBox"
                               Check="PageCheck"
                               Tag="1" MinPaddingRight="35" Height="36" VerticalAlignment="Top"

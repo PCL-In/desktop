@@ -689,6 +689,17 @@
     <sys:String x:Key="Download.Left.LabyMod">LabyMod</sys:String>
     <sys:String x:Key="Download.Left.LegacyFabric">Legacy Fabric</sys:String>
     <sys:String x:Key="Download.Left.LiteLoader">LiteLoader</sys:String>
+    <sys:String x:Key="Download.Java.Empty">没有获取到可下载的 Java 版本，请检查网络后重试。</sys:String>
+    <sys:String x:Key="Download.Java.Intro.Description">从 Mojang 官方运行时下载 Java，和启动时自动下载用的是同一份数据。&#xA;&#xA;下载完成后，可以在「设置 → 启动选项 → 游戏 Java」里看到它；如果某个实例启动时提示缺少 Java，也可以直接让它自动下载。</sys:String>
+    <sys:String x:Key="Download.Java.Intro.Title">下载 Java</sys:String>
+    <sys:String x:Key="Download.Java.Start">开始下载</sys:String>
+    <sys:String x:Key="Download.Java.Status.Done">下载完成：{0}，可在「设置 → 启动选项 → 游戏 Java」中查看。</sys:String>
+    <sys:String x:Key="Download.Java.Status.Downloading">正在下载：{0}……</sys:String>
+    <sys:String x:Key="Download.Java.Status.Failed">下载失败：{0}（{1}）</sys:String>
+    <sys:String x:Key="Download.Java.Status.Loading">正在获取可下载的 Java 版本列表……</sys:String>
+    <sys:String x:Key="Download.Java.Version">选择版本</sys:String>
+    <sys:String x:Key="Download.Java.VersionItem">Java {0}（{1}，{2}）</sys:String>
+    <sys:String x:Key="Download.Left.Java">Java</sys:String>
     <sys:String x:Key="Download.Left.Minecraft">Minecraft</sys:String>
     <sys:String x:Key="Download.Left.Mod">模组</sys:String>
     <sys:String x:Key="Download.Left.Modpack">整合包</sys:String>

@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 using System.Windows.Input;
 using PCL.Core.App.Localization;
 
@@ -21,6 +21,12 @@ public partial class PageDownloadLeft : IRefreshable
     {
         switch (subType)
         {
+            case FormMain.PageSubType.DownloadJava:
+            {
+                ModMain.frmDownloadJava?.RefreshList();
+                ItemJava.Checked = true;
+                break;
+            }
             case FormMain.PageSubType.DownloadInstall:
             {
                 ModDownload.dlClientListLoader.Start(isForceRestart: true);
@@ -241,6 +247,12 @@ public partial class PageDownloadLeft : IRefreshable
             id = pageID;
         switch (id)
         {
+            case FormMain.PageSubType.DownloadJava:
+            {
+                if (ModMain.frmDownloadJava is null)
+                    ModMain.frmDownloadJava = new PageDownloadJava();
+                return ModMain.frmDownloadJava;
+            }
             case FormMain.PageSubType.DownloadInstall:
             {
                 if (ModMain.frmDownloadInstall is null)

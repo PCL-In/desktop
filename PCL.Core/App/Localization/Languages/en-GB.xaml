@@ -689,6 +689,17 @@
     <sys:String x:Key="Download.Left.LabyMod">LabyMod</sys:String>
     <sys:String x:Key="Download.Left.LegacyFabric">Legacy Fabric</sys:String>
     <sys:String x:Key="Download.Left.LiteLoader">LiteLoader</sys:String>
+    <sys:String x:Key="Download.Java.Empty">Could not fetch the list of downloadable Java runtimes. Check your network and try again.</sys:String>
+    <sys:String x:Key="Download.Java.Intro.Description">Download Java straight from Mojang's official runtimes - the same data the launcher uses when it downloads Java automatically.&#xA;&#xA;Once it is done you can find it under Settings - Launch options - Game Java; if an instance reports a missing Java at launch, you can still let the launcher download it automatically.</sys:String>
+    <sys:String x:Key="Download.Java.Intro.Title">Download Java</sys:String>
+    <sys:String x:Key="Download.Java.Start">Download</sys:String>
+    <sys:String x:Key="Download.Java.Status.Done">Done: {0} - you can find it under Settings - Launch options - Game Java.</sys:String>
+    <sys:String x:Key="Download.Java.Status.Downloading">Downloading {0}...</sys:String>
+    <sys:String x:Key="Download.Java.Status.Failed">Failed to download {0} ({1})</sys:String>
+    <sys:String x:Key="Download.Java.Status.Loading">Fetching the list of downloadable Java runtimes...</sys:String>
+    <sys:String x:Key="Download.Java.Version">Version</sys:String>
+    <sys:String x:Key="Download.Java.VersionItem">Java {0} ({1}, {2})</sys:String>
+    <sys:String x:Key="Download.Left.Java">Java</sys:String>
     <sys:String x:Key="Download.Left.Minecraft">Minecraft</sys:String>
     <sys:String x:Key="Download.Left.Mod">Mods</sys:String>
     <sys:String x:Key="Download.Left.Modpack">Modpacks</sys:String>

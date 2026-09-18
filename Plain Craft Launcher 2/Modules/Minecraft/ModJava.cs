@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.Json;
 using PCL.Core.App;
 using PCL.Core.IO;
@@ -405,6 +405,10 @@ public static class ModJava
 
     private static string lastJavaBaseDir; // 用于在下载中断或失败时删除未完成下载的 Java 文件夹，防止残留只下了一半但 -version 能跑的 Java
 
+    // Mojang 官方 Java 运行时索引：自动下载与「下载 → Java」页面共用这一份数据
+    private const string JavaRuntimeIndexUrl =
+        "https://piston-meta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json";
+
     private static readonly HashSet<string> ignoreHash = new[]
     {
         "12976a6c2b227cbac58969c1455444596c894656", "c80e4bab46e34d02826eab226a4441d0970f2aba",
@@ -418,11 +422,11 @@ public static class ModJava
             ModDownload.DlVersionListOrder(
                 new[]
                 {
-                    "https://piston-meta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json"
+                    JavaRuntimeIndexUrl
                 },
                 new[]
                 {
-                    "https://bmclapi2.bangbang93.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json"
+                    JavaRuntimeIndexUrl.Replace("piston-meta.mojang.com", "bmclapi2.bangbang93.com")
                 }), isJson: true);
         // 查找要下载的目标 Java
         string? targetName = null;
@@ -481,6 +485,37 @@ public static class ModJava
 
         loader.output = results;
         ModBase.Log($"[Java] 需要下载 {results.Count} 个文件，目标文件夹：{lastJavaBaseDir}");
+    }
+
+    /// <summary>
+    ///     PCL-In：列出 Mojang 官方提供的 Java 运行时，供「下载 → Java」页面选择。
+    ///     数据来源与自动下载完全一致（同一份 all.json），所以 Mojang 之后新增 Java 版本时，
+    ///     页面会自动多出对应条目，不用改代码。
+    /// </summary>
+    public static List<(int Major, string Version, string Component)> GetJavaRuntimeList()
+    {
+        var address = ModDownload.DlVersionListOrder(
+            new[] { JavaRuntimeIndexUrl },
+            new[] { JavaRuntimeIndexUrl.Replace("piston-meta.mojang.com", "bmclapi2.bangbang93.com") }).First();
+        var json = Requester.FetchJson(address, RequestParam.WithRetry);
+        var result = new List<(int Major, string Version, string Component)>();
+        if (json?[$"windows-x{(SystemInfo.Is32BitSystem ? "86" : "64")}"] is not JsonObject platform)
+            return result;
+        foreach (var entry in platform)
+        {
+            var version = entry.Value?.AsArray().FirstOrDefault()?["version"]?["name"]?.ToString();
+            if (string.IsNullOrEmpty(version))
+                continue;
+            var major = (int)ModBase.Val(version.BeforeFirst("."));
+            if (major < 8)
+                continue;
+            // 同一大版本可能有多个组件（如 beta / gamma 都是 17），Mojang 把新的排在前面，取第一个即可
+            if (result.Any(item => item.Major == major))
+                continue;
+            result.Add((major, version, entry.Key));
+        }
+
+        return result.OrderByDescending(item => item.Major).ToList();
     }
 
     #endregion
