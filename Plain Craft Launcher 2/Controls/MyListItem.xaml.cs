@@ -193,7 +193,7 @@ public partial class MyListItem : IMyRadio
                 ApplyLeftIconOnly(Config.Preference.Hide.PageLeftIconOnly);
                 // 列表项的图标可能是加载后才赋值的，此时才知道这个列表到底有没有图标，
                 // 需要让左侧栏重新判断分类标题（如“添加或导入”）是否该隐藏（PCL-In）。
-                pageLeft.RefreshGroupTextVisibility();
+                pageLeft.QueueGroupTextRefresh();
                 return;
             }
         }

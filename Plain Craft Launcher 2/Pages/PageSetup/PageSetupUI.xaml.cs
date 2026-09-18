@@ -753,7 +753,10 @@ public partial class PageSetupUI
                     !HiddenForceShow && conf.PageSetup ? Visibility.Collapsed : Visibility.Visible;
                 ModMain.frmMain.BtnTitleSelect3.Visibility =
                     !HiddenForceShow && conf.PageTools ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect4.Visibility =
+                // PCL-In：设置里把聊天页藏起来时，没必要继续占着内嵌浏览器的内存
+            if (!HiddenForceShow && conf.PageChat)
+                PageChatRight.ReleaseChatWebView();
+            ModMain.frmMain.BtnTitleSelect4.Visibility =
                     !HiddenForceShow && conf.PageChat ? Visibility.Collapsed : Visibility.Visible;
             }
 

@@ -203,6 +203,25 @@ public class MyPageLeft : Grid
         }
     }
 
+    private bool _groupTextRefreshQueued;
+
+    /// <summary>
+    ///     排队刷新分组标题（PCL-In）。
+    ///     列表项加载完成时会逐项调用这里，所以必须合并成一次：否则 n 个列表项各自遍历一遍
+    ///     整棵视觉树去找列表项，几百项的版本列表就是 O(n²)。
+    /// </summary>
+    public void QueueGroupTextRefresh()
+    {
+        if (_groupTextRefreshQueued)
+            return;
+        _groupTextRefreshQueued = true;
+        Dispatcher.BeginInvoke(new Action(() =>
+        {
+            _groupTextRefreshQueued = false;
+            RefreshGroupTextVisibility();
+        }), System.Windows.Threading.DispatcherPriority.Background);
+    }
+
     /// <summary>
     ///     刷新分组标题（如“添加或导入”“实用工具”）的可见性。
     ///     只有确实带了图标的列表才隐藏分组标题，否则（文件夹列表、日志列表等）保持原样（PCL-In）。

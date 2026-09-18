@@ -48,6 +48,14 @@ public partial class PageChatRight
     /// </summary>
     private bool _isDialogOpen;
 
+    /// <summary>
+    ///     离开聊天页多久之后释放内嵌浏览器（PCL-In）。留在页面上时保持热启动，不释放。
+    /// </summary>
+    private static readonly TimeSpan ReleaseDelay = TimeSpan.FromSeconds(90);
+
+    private System.Windows.Threading.DispatcherTimer? _releaseTimer;
+    private bool _isReleased;
+
     public PageChatRight()
     {
         InitializeComponent();
@@ -202,6 +210,24 @@ public partial class PageChatRight
 
     private void _RefreshVisibility()
     {
+        // PCL-In：第一次刷新时挂上「离开聊天页一段时间后释放内嵌浏览器」的计时器
+        if (_releaseTimer is null)
+        {
+            _releaseTimer = new System.Windows.Threading.DispatcherTimer { Interval = ReleaseDelay };
+            _releaseTimer.Tick += (_, _) =>
+            {
+                _releaseTimer?.Stop();
+                ReleaseChatWebView();
+            };
+            IsVisibleChanged += (_, _) =>
+            {
+                if (IsVisible)
+                    _releaseTimer?.Stop(); // 回到聊天页，取消待释放
+                else if (_state == ChatState.Loaded)
+                    _releaseTimer?.Start(); // 离开聊天页，开始倒计时
+            };
+        }
+
         _view.Visibility = _state == ChatState.Loaded && !_isDialogOpen
             ? Visibility.Visible
             : Visibility.Collapsed;
@@ -209,6 +235,50 @@ public partial class PageChatRight
         _panButtons.Visibility = _state == ChatState.Failed ? Visibility.Visible : Visibility.Collapsed;
         if (_state == ChatState.Loading)
             _labStatus.Text = Lang.Text("Chat.Status.Loading");
+    }
+
+    /// <summary>
+    ///     释放内嵌浏览器，把内存与后台进程还给系统（PCL-In）。
+    ///     调用后本页面实例作废：ReleaseChatWebView() 会把 ModMain.frmChatRight 置空，
+    ///     下次进入聊天页会重新创建一个（代价是 WebView2 冷启动）。
+    /// </summary>
+    public void Release()
+    {
+        if (_isReleased)
+            return;
+        _isReleased = true;
+        _releaseTimer?.Stop();
+        try
+        {
+            if (ViewHost.Children.Contains(_view))
+                ViewHost.Children.Remove(_view);
+            _view.Dispose();
+            ModBase.Log("[Chat] 已释放内嵌浏览器");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[Chat] 释放内嵌浏览器失败", ModBase.LogLevel.Debug);
+        }
+    }
+
+    /// <summary>
+    ///     释放聊天页占用的内存（PCL-In）：离开聊天页 90 秒后、在设置里隐藏聊天页时、
+    ///     以及开始启动游戏前调用。
+    /// </summary>
+    public static void ReleaseChatWebView()
+    {
+        try
+        {
+            var page = ModMain.frmChatRight;
+            if (page is null || page._isReleased)
+                return;
+            page.Release();
+            ModMain.frmChatRight = null; // 下次进聊天页重建
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[Chat] 释放聊天页失败", ModBase.LogLevel.Debug);
+        }
     }
 
     private void _Fail(string key)

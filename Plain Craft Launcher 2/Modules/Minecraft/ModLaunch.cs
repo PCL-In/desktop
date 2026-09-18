@@ -202,6 +202,9 @@ public static class ModLaunch
         // 预检查
         if (!ModBase.RunInUi())
             throw new Exception("McLaunchStart 必须在 UI 线程调用！");
+        // PCL-In：要开游戏了，先把聊天页的内嵌浏览器内存让出来
+        PageChatRight.ReleaseChatWebView();
+
         if (mcLaunchLoader.State == ModBase.LoadState.Loading)
         {
             HintService.Hint(Lang.Text("Minecraft.Launch.Error.AlreadyLaunching"), HintType.Error);
