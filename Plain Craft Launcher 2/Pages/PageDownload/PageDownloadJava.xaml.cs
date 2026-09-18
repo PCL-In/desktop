@@ -68,6 +68,9 @@ public partial class PageDownloadJava : MyPageRight
         var card = new MyCard
         {
             Margin = new Thickness(20, 20, 20, 0),
+            // MyCard 自己默认是左对齐，不显式撑开的话会缩成内容宽度，
+            // 里面的下拉框就算设了 Stretch 也只能撑到文本那么宽
+            HorizontalAlignment = HorizontalAlignment.Stretch,
             Title = Lang.Text("Download.Java.Intro.Title")
         };
         var content = new StackPanel { Margin = new Thickness(25, 40, 15, 20) };

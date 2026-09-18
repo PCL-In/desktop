@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     一键构建 PCL-In 单文件 exe，用于本地测试。
 
@@ -28,6 +28,9 @@
 .PARAMETER Output
     输出目录，默认为 build\artifact。
 
+.NOTES
+    仅适用于 https://github.com/PCL-In 项目（PCL-In/desktop），不做通用化。
+
 .EXAMPLE
     .\build.cmd
     .\Build.ps1 -Architecture ARM64
@@ -53,6 +56,10 @@ param(
     # 由 build.cmd 转发，只用于控制构建结束后是否 pause，脚本本身不使用
     [switch]$NoPause
 )
+
+Write-Host ''
+Write-Host '本脚本仅适用于 https://github.com/PCL-In 项目（PCL-In/desktop）。' -ForegroundColor DarkGray
+Write-Host '它会临时把 metadata.json 的自报版本改成“比线上最新版大一点”，构建结束自动还原。' -ForegroundColor DarkGray
 
 $ErrorActionPreference = 'Stop'
 try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch { }
@@ -239,5 +246,4 @@ Write-Ok ('文件   ' + $exe.FullName)
 Write-Ok ('大小   ' + [math]::Round($exe.Length / 1MB, 2) + ' MB')
 Write-Ok ('SHA256 ' + $hash)
 Write-Host ''
-Write-Host '直接双击这个 exe 就能测试：顶部导航第五个图标（聊天气泡）就是聊天室。' -ForegroundColor Cyan
 Write-Host '注意：内嵌浏览器的用户数据在 %LOCALAPPDATA%\PCLIn\WebView2，删掉它等于清空聊天页的登录状态。' -ForegroundColor DarkGray
